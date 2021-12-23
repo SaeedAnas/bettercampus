@@ -1,0 +1,24 @@
+{
+  "name": "BetterCampus",
+  "description": "A better browsing experience using Infinite Campus",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": ""
+  },
+  "host_permissions": ["*://*.infinitecampus.org/campus/*"],
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.infinitecampus.org/campus/*"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "externally_connectable": {
+    "matches": ["*://*.infinitecampus.org/campus/*"]
+  }
+}
