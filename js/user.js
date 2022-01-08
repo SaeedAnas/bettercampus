@@ -1,4 +1,4 @@
-import { getPath } from "./utils.js";
+import { getPath } from "./utils/path.js";
 
 const getCourseNumber = () => {
   let path = getPath();

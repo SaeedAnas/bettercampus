@@ -1,6 +1,6 @@
-import { getPage, getPath } from "./utils.js";
-import { handleGradePage } from "./grades.js";
-import { onChange } from "./observers.js";
+import { getPage, getPath } from "./utils/path.js";
+import { onChange } from "./utils/observers.js";
+import { handleGradePage } from "./pages/grades.js";
 
 const handlePage = () => {
   const page = getPage();

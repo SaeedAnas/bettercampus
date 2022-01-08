@@ -9,7 +9,7 @@
   "host_permissions": ["*://*.infinitecampus.org/campus/*"],
   "permissions": ["storage", "cookies"],
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "html/popup.html"
   },
   "content_scripts": [
     {

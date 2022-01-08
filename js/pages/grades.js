@@ -1,6 +1,5 @@
-import { isGradePath, getPath } from "./utils.js";
-import { getAssignments } from "./user.js";
-import { onChange, onLoaded } from "./observers.js";
+import { getAssignments } from "../user.js";
+import { onChange, onLoaded } from "../utils/observers.js";
 
 const buttonClass = "add-button";
 
