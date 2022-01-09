@@ -15,28 +15,27 @@ const fetchGrades = async (course) => {
   return data;
 };
 
-const getValidQuarters = (data) => {
+const getValidTerm = (data) => {
   let details = data.details;
 
   let valid = [];
-  for (let quarter of details) {
-    if (quarter.categories.length > 0) {
-      valid.push(quarter);
+  for (const term of details) {
+    if (term.categories.length > 0) {
+      valid.push(term);
     }
   }
   return valid;
 };
 
-const getAssignments = async () => {
+const getTerms = async () => {
   // get course number
   const course = getCourseNumber();
 
   const data = await fetchGrades(course);
 
-  const validQuarters = getValidQuarters(data);
+  const validTerms = getValidTerm(data);
 
-  console.log(validQuarters);
+  return validTerms;
 };
 
-// export all functions
-export { getCourseNumber, fetchGrades, getValidQuarters, getAssignments };
+export { getCourseNumber, fetchGrades, getValidTerm, getTerms };

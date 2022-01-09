@@ -1,3 +1,4 @@
+// Runs once on call and then runs on every mutation if the query is true
 const onChange = (
   query,
   callback,
@@ -19,6 +20,7 @@ const onChange = (
   observer.observe(document, config);
 };
 
+// Watches mutations until the query is true
 const onLoaded = (
   query,
   callback,
