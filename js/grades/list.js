@@ -83,6 +83,10 @@ const updateDivider = async (e) => {
 
   let total = calculator.totalGrade(categoryMap);
 
+  console.log(categories);
+  console.log(categoryMap);
+  console.log(term);
+
   const prevTotal =
     term.task.progressPercent !== undefined ? term.task.progressPercent : 0;
 
@@ -130,6 +134,10 @@ const injectCategoryGrade = (category, categoryMap) => {
 
   const buttonData = model.fromCategoryButton(category.children[0]);
   const categoryData = categoryMap[buttonData.name];
+
+  if (!categoryData) {
+    return;
+  }
 
   if (!hasCategoryChanged(categoryData)) {
     return;

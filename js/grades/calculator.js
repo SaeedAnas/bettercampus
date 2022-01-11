@@ -39,7 +39,13 @@ const categoryGrade = (data, categories) => {
     category.total += assignment.total;
   });
 
+  const empty = [];
+
   for (const [key, value] of Object.entries(categoryMap)) {
+    // if points and total are null remove category from categoryMap
+    if (value.points === null || value.total === null) {
+      empty.push(key);
+    }
     value.points = roundToTwo(value.points);
     value.total = roundToTwo(value.total);
     if (value.points === null) {
@@ -49,6 +55,11 @@ const categoryGrade = (data, categories) => {
       value.percent = roundToTwo((value.points / value.total) * 100);
     }
   }
+
+  // remove categories with null points and total
+  empty.forEach((category) => {
+    delete categoryMap[category];
+  });
 
   return categoryMap;
 };
