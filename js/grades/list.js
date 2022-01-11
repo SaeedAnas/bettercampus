@@ -83,10 +83,6 @@ const updateDivider = async (e) => {
 
   let total = calculator.totalGrade(categoryMap);
 
-  console.log(categories);
-  console.log(categoryMap);
-  console.log(term);
-
   const prevTotal =
     term.task.progressPercent !== undefined ? term.task.progressPercent : 0;
 

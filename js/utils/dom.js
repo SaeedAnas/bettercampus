@@ -26,9 +26,27 @@ function injectBefore(newNode, referenceNode) {
   referenceNode.parentNode.insertBefore(newNode, referenceNode);
 }
 
+// Firefox support
+const firefoxPath = (e) => {
+  var path = [];
+  var currentElem = e.target;
+  while (currentElem) {
+    path.push(currentElem);
+    currentElem = currentElem.parentElement;
+  }
+  if (path.indexOf(window) === -1 && path.indexOf(document) === -1)
+    path.push(document);
+  if (path.indexOf(window) === -1) path.push(window);
+  return path;
+};
+
 // Finds the element from the button click event path using class name
 const searchPathByClass = (e, className) => {
-  const path = e.path;
+  if (!e.path) {
+    e.path = firefoxPath(e);
+  }
+
+  let path = e.path;
 
   for (let element of path) {
     if (element.classList.contains(className)) {
@@ -42,7 +60,11 @@ const searchPathByClass = (e, className) => {
 
 // Finds the element from the button click event path using tag name
 const searchPathByTag = (e, tagName) => {
-  const path = e.path;
+  if (!e.path) {
+    e.path = firefoxPath(e);
+  }
+
+  let path = e.path;
 
   for (let element of path) {
     if (element.tagName.toLowerCase() === tagName) {
