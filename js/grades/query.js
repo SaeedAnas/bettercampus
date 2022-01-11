@@ -86,10 +86,20 @@ const getDivider = (e) => {
   return searchPathByClass(e, className);
 };
 
+const getDividerFromCard = (card) => {
+  const className = "divider";
+  return card.getElementsByClassName(className)[0];
+};
+
 const getDividerHeader = (e) => {
   const divider = getDivider(e);
   const className = "table__row";
   return divider.getElementsByClassName(className)[0];
+};
+
+const getDividerHeaderCard = (card) => {
+  const className = "table__row";
+  return card.getElementsByClassName(className)[0];
 };
 
 const getHeaderInfo = (e) => {
@@ -98,8 +108,24 @@ const getHeaderInfo = (e) => {
   return model.fromHeader(getHeaderSpans(header));
 };
 
+const getHeaderInfoFromCard = (card) => {
+  const header = getDividerHeaderCard(card);
+
+  return model.fromHeader(getHeaderSpans(header));
+};
+
+const getHeaderInfoFromElement = (header) => {
+  return model.fromHeader(getHeaderSpans(header.parentElement.parentElement));
+};
+
 const getDividerCategories = (e) => {
   const divider = getDivider(e);
+  const categories = getCategories(divider);
+  return categories;
+};
+
+const getDividerCategoriesFromCard = (card) => {
+  const divider = getDividerFromCard(card);
   const categories = getCategories(divider);
   return categories;
 };
@@ -110,9 +136,13 @@ export default {
   getPanel,
   getHeader,
   getDividerHeader,
+  getDividerHeaderCard,
   getDivider,
   getHeaderInfo,
+  getHeaderInfoFromElement,
+  getHeaderInfoFromCard,
   getList,
   getCategories,
   getDividerCategories,
+  getDividerCategoriesFromCard,
 };

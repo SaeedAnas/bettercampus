@@ -9,20 +9,20 @@ import { editButton, closeButton } from "./buttons.js";
 import { itemForm } from "./input.js";
 import user from "./user.js";
 import model from "./model.js";
-import { handleOnRemove, updateDivider } from "./list.js";
+import { handleOnRemove, handleUpdate } from "./list.js";
 import calculator from "./calculator.js";
 
-const addGrade = (e) => {
+const addGrade = async (e) => {
   toItem(e);
-  updateDivider(e);
+  await handleUpdate(e);
 };
 
 const editGrade = async (e) => {
   await toForm(e);
-  updateDivider(e);
+  await handleUpdate(e);
 };
 
-const onRemove = (e) => {
+const onRemove = async (e) => {
   const li = searchPathByTag(e, "li");
 
   // add remove class to hide the item
@@ -30,8 +30,9 @@ const onRemove = (e) => {
 
   // wait for animation to finish
   // then remove the item
-  li.addEventListener("transitionend", () => {
+  li.addEventListener("transitionend", async () => {
     removeLi(e);
+    await handleUpdate(e);
     handleOnRemove(e);
   });
 };
@@ -62,7 +63,7 @@ const toForm = async (e) => {
 // Grade item component to input custom grade
 const assignmentForm = (categories, defaultInputs = {}) => {
   const li = html(`
-    <li class="assignment"></li>
+    <li class="assignment assignment-form-wrapper"></li>
     `);
 
   const form = itemForm(categories, defaultInputs);

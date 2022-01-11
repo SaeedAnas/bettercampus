@@ -78,6 +78,9 @@ const dropdownMenu = (categories, name) => {
 };
 
 const defaultValue = (el, value) => {
+  if (!value) {
+    return;
+  }
   let input = el.children[1];
   input.value = value;
   input.parentNode.dataset.value = value;

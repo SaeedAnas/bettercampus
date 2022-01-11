@@ -13,6 +13,6 @@ const handlePage = async () => {
   }
 };
 
-export function main() {
+export async function main() {
   onChange(getPath, handlePage);
 }

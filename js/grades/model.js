@@ -40,23 +40,28 @@ const fromHeader = (spans) => {
   };
 };
 
-const fromForm = (form) => {
+const fromForm = (form, placeholders = true) => {
   const inputs = form.getElementsByTagName("input");
   const dropdown = form.getElementsByTagName("select")[0];
 
   // input array to object where key is input name and value is input value
   const formData = {};
   for (const input of inputs) {
+    let val = input.value;
     if (input.value === "") {
-      input.value = input.placeholder;
+      if (placeholders) {
+        val = input.placeholder;
+      } else {
+        val = null;
+      }
     }
 
     // if id is number-input, convert to number
     if (input.id === "number-input") {
-      input.value = Number(input.value);
+      val = Number(val);
     }
 
-    formData[input.name] = input.value;
+    formData[input.name] = val;
   }
 
   formData.category = dropdown.value;
@@ -98,10 +103,31 @@ const fromCategoryButton = (button) => {
   };
 };
 
+const fromList = (ul) => {
+  const items = [];
+
+  if (!ul) {
+    return items;
+  }
+
+  for (const li of ul.children) {
+    if (li.classList.contains("assignment-item")) {
+      const itemData = fromItem(li);
+      items.push({ type: "item", data: itemData });
+    } else if (li.classList.contains("assignment-form-wrapper")) {
+      const formData = fromForm(li, false);
+      items.push({ type: "form", data: formData });
+    }
+  }
+
+  return items;
+};
+
 export default {
   fromTerm,
   fromHeader,
   fromForm,
   fromItem,
   fromCategoryButton,
+  fromList,
 };

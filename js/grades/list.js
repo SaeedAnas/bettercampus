@@ -1,11 +1,5 @@
-import {
-  injectAfter,
-  injectBefore,
-  html,
-  searchPathByTag,
-  remove,
-} from "../utils/dom.js";
-import { assignmentForm } from "./assignment.js";
+import { injectAfter, html, searchPathByTag, remove } from "../utils/dom.js";
+import { assignmentForm, assignmentItem } from "./assignment.js";
 import query from "./query.js";
 import user from "./user.js";
 import model from "./model.js";
@@ -37,10 +31,24 @@ const createList = (e) => {
   return ul;
 };
 
+const createListFromCard = (card) => {
+  const header = query.getDividerHeaderCard(card);
+
+  let ul = query.getList(header);
+
+  if (ul) {
+    return ul;
+  }
+
+  ul = assignmentList();
+
+  injectAfter(ul, header);
+
+  return ul;
+};
+
 const handleOnRemove = (e) => {
   const ul = searchPathByTag(e, "ul");
-
-  updateDivider(e);
 
   // if ul length is 0, then remove the ul
   if (ul.children.length === 0) {
@@ -48,10 +56,69 @@ const handleOnRemove = (e) => {
   }
 };
 
-const appendNewAssignment = async (e) => {
-  // const data = await user.load();
-  // console.log(data);
+const handleUpdate = async (e) => {
+  saveState(e);
+  updateDivider(e);
+};
 
+/*
+
+  {
+    personID: {
+      sectionID: {
+        termID: state
+      }
+    }
+  }
+
+*/
+
+const saveState = async (e) => {
+  const term = await user.fetchCurrentTerm(e);
+
+  const state = getState(e);
+
+  await user.saveState(term, state);
+};
+
+const getState = (e) => {
+  const divider = query.getDivider(e);
+
+  const ul = divider.querySelector('[role="new-grades"]');
+
+  const items = model.fromList(ul);
+
+  return items;
+};
+
+const loadState = async (card) => {
+  const term = await user.fetchCurrentTermFromCard(card);
+
+  const state = await user.loadState(term);
+
+  if (!state) {
+    return;
+  }
+
+  if (state.length > 0) {
+    const ul = createListFromCard(card);
+
+    for (const item of state) {
+      if (item.type === "item") {
+        const assignment = assignmentItem(item.data);
+        ul.appendChild(assignment);
+      } else if (item.type === "form") {
+        const categories = await user.fetchCategoriesFromCard(card);
+        const form = assignmentForm(categories, item.data);
+        ul.appendChild(form);
+      }
+    }
+
+    updateDividerFromCard(card);
+  }
+};
+
+const appendNewAssignment = async (e) => {
   const ul = createList(e);
 
   const categories = await user.fetchCategories(e);
@@ -59,6 +126,38 @@ const appendNewAssignment = async (e) => {
   const newAssignment = assignmentForm(categories);
 
   ul.appendChild(newAssignment);
+
+  await saveState(e);
+};
+
+const updateDividerFromCard = async (card) => {
+  const header = query.getDividerHeaderCard(card);
+
+  let ul = query.getList(header);
+
+  const data = [];
+
+  for (const li of ul.children) {
+    if (li.classList.contains("assignment-item")) {
+      const item = model.fromItem(li);
+      data.push(item);
+    }
+  }
+
+  const term = await user.fetchCurrentTermFromCard(card);
+
+  const categories = model.fromTerm(term);
+
+  const categoryMap = calculator.categoryGrade(data, categories);
+
+  updateCategoriesFromCard(card, categoryMap);
+
+  let total = calculator.totalGrade(categoryMap);
+
+  const prevTotal =
+    term.task.progressPercent !== undefined ? term.task.progressPercent : 0;
+
+  updateTotalFromCard(card, total, prevTotal);
 };
 
 const updateDivider = async (e) => {
@@ -153,6 +252,13 @@ const updateCategories = async (e, categoryMap) => {
   }
 };
 
+const updateCategoriesFromCard = async (card, categoryMap) => {
+  const categoryList = query.getDividerCategoriesFromCard(card);
+  for (const category of categoryList) {
+    injectCategoryGrade(category, categoryMap);
+  }
+};
+
 const totalGrade = (total, prevTotal) => {
   const color = total > prevTotal ? "higher-score" : "lower-score";
 
@@ -209,4 +315,18 @@ const updateTotal = async (e, total, prevTotal) => {
   injectTotalGrade(gradeDiv, total, prevTotal);
 };
 
-export { appendNewAssignment, handleOnRemove, updateDivider };
+const updateTotalFromCard = async (card, total, prevTotal) => {
+  const header = query.getDividerHeaderCard(card);
+  const gradeDiv = header.getElementsByClassName(
+    "grades__flex-row__item--right"
+  )[0];
+  injectTotalGrade(gradeDiv, total, prevTotal);
+};
+
+export {
+  appendNewAssignment,
+  handleOnRemove,
+  handleUpdate,
+  updateDivider,
+  loadState,
+};
