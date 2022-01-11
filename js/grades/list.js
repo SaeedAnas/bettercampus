@@ -152,6 +152,8 @@ const updateCategories = async (e, categoryMap) => {
 const totalGrade = (total, prevTotal) => {
   const color = total > prevTotal ? "higher-score" : "lower-score";
 
+  const letterGrade = calculator.letterGrade(total);
+
   const wrapper = html(`
     <div role="custom-total" class="total-wrapper ${color}" >
     </div>
@@ -159,7 +161,7 @@ const totalGrade = (total, prevTotal) => {
 
   const letter = html(`
     <div class="total-letter">
-      <b>A</b>
+      <b>${letterGrade}</b>
     </div>
     `);
 

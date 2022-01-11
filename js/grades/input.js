@@ -86,7 +86,7 @@ const defaultValue = (el, value) => {
 const itemForm = (categories, defaultInputs = {}) => {
   const hasDefaultInputs = Object.keys(defaultInputs).length > 0;
 
-  const textInput = resizeableTextInput("name", "Assignment");
+  const textInput = resizeableTextInput("name", "Untitled");
 
   const pointInput = resizeableNumberInput("points", "0", true);
   const totalInput = resizeableNumberInput("total", "100", true);

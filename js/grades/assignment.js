@@ -10,6 +10,7 @@ import { itemForm } from "./input.js";
 import user from "./user.js";
 import model from "./model.js";
 import { handleOnRemove, updateDivider } from "./list.js";
+import calculator from "./calculator.js";
 
 const addGrade = (e) => {
   toItem(e);
@@ -73,10 +74,74 @@ const assignmentForm = (categories, defaultInputs = {}) => {
   return li;
 };
 
-const span = (id, value) => {
+const gripLinesIcon = () => {
   return html(`
-    <span id="${id}" class="span-item">${value}</span>
+    <div class="assignment-icon">
+      <span class="fa-stack">
+        <i class="divider__icon fa fa-light fa-grip-lines"></i>
+      </span>
+    </div>
     `);
+};
+
+const assignmentInfo = (name, category, weight) => {
+  const info = [];
+
+  const nameDiv = html(`
+    <div class="assignment-name">
+        <span id="name" class="span-item">${name}</span>
+    </div>
+    `);
+  info.push(nameDiv);
+
+  const categoryDiv = html(`
+    <div class="assignment-category divider-line">
+        <span id="category" class="span-item">${category}</span>
+    </div>
+    `);
+  info.push(categoryDiv);
+
+  if (weight != 1) {
+    const weightDiv = html(`
+      <div class="assignment-weight divider-line">
+          Weight: <span id="weight" class="span-item">${weight}</span>
+      </div>
+    `);
+    info.push(weightDiv);
+  }
+
+  const gripLines = gripLinesIcon();
+
+  const infoDiv = wrap(info, ["assignment-info"]);
+
+  const leftDiv = wrap([gripLines, infoDiv], ["assignment-left"]);
+
+  return leftDiv;
+};
+
+const assignmentGrade = (points, total, percent) => {
+  const ratioDiv = html(`
+    <div class="assignment-ratio">
+      <span id="points" class="span-item">${points}</span>/<span id="total" class="span-item">${total}</span>
+    </div>
+    `);
+
+  const percentDiv = html(`
+    <div class="assignment-percent divider-line">
+      (<span id="percent" class="span-item">${percent}</span>%)
+    </div>
+    `);
+
+  const gradeDiv = wrap([ratioDiv, percentDiv], ["assignment-grade"]);
+
+  const submitButton = editButton(editGrade);
+  const deleteButton = closeButton(onRemove);
+
+  const buttons = wrap([submitButton, deleteButton], ["assignment-buttons"]);
+
+  const rightDiv = wrap([gradeDiv, buttons], ["assignment-right"]);
+
+  return rightDiv;
 };
 
 // Grade item component to display custom grade
@@ -85,21 +150,17 @@ const assignmentItem = (formData) => {
     <li class="assignment assignment-item"></li>
     `);
 
-  const info = [];
+  const leftDiv = assignmentInfo(
+    formData.name,
+    formData.category,
+    formData.weight
+  );
 
-  // iterate over data and create spans
-  for (const [key, value] of Object.entries(formData)) {
-    info.push(span(key, value));
-  }
+  const percent = calculator.calcPercent(formData.points, formData.total);
 
-  const item = wrap(info, ["grade-item"]);
+  const rightDiv = assignmentGrade(formData.points, formData.total, percent);
 
-  const submitButton = editButton(editGrade);
-  const deleteButton = closeButton(onRemove);
-
-  const buttons = wrap([submitButton, deleteButton], ["assignment-buttons"]);
-
-  const display = wrap([item, buttons], ["assignment-display"]);
+  const display = wrap([leftDiv, rightDiv], ["assignment-display"]);
 
   li.appendChild(display);
 

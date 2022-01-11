@@ -40,6 +40,8 @@ const categoryGrade = (data, categories) => {
   });
 
   for (const [key, value] of Object.entries(categoryMap)) {
+    value.points = roundToTwo(value.points);
+    value.total = roundToTwo(value.total);
     if (value.points === null) {
       value.percent = 0;
       value.weight = 0;
@@ -68,4 +70,39 @@ const totalGrade = (categoryMap) => {
   return percent;
 };
 
-export default { categoryGrade, totalGrade };
+const calcPercent = (points, total) => {
+  return roundToTwo((points / total) * 100);
+};
+
+// Calculates the grade for a single assignment
+const letterGrade = (p) => {
+  if (p > 97) {
+    return "A+";
+  } else if (p > 93) {
+    return "A";
+  } else if (p > 90) {
+    return "A-";
+  } else if (p > 87) {
+    return "B+";
+  } else if (p > 83) {
+    return "B";
+  } else if (p > 80) {
+    return "B-";
+  } else if (p > 77) {
+    return "C+";
+  } else if (p > 73) {
+    return "C";
+  } else if (p > 70) {
+    return "C-";
+  } else if (p > 67) {
+    return "D+";
+  } else if (p > 63) {
+    return "D";
+  } else if (p > 60) {
+    return "D-";
+  } else {
+    return "F";
+  }
+};
+
+export default { categoryGrade, totalGrade, calcPercent, letterGrade };

@@ -79,6 +79,10 @@ const fromItem = (item) => {
     }
   }
 
+  if (!itemData.weight) {
+    itemData.weight = 1;
+  }
+
   return itemData;
 };
 
