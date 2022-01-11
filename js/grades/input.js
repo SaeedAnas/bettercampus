@@ -1,13 +1,14 @@
 import { wrap, html } from "../utils/dom.js";
 import { closeButton, checkButton } from "./buttons.js";
 import { onRemove } from "./assignment.js";
+import { saveOnInput } from "./list.js";
 
 const resizeableTextInput = (label, placeholder, required = false) => {
   let req = required ? "required" : "";
   const input = html(`
   <label class="input-sizer">
     <span>${label}: </span>
-    <input ${req} type="text" id=${label} name=${label} size="${placeholder.length}" placeholder="${placeholder}" autocomplete="off">
+    <input ${req} type="text" id=${label} onClick="this.select();" onClick="this.select();" onClick="this.select();" onClick="this.select();" name=${label} size="${placeholder.length}" placeholder="${placeholder}" autocomplete="off">
   </label>
     `);
 
@@ -18,6 +19,12 @@ const resizeableTextInput = (label, placeholder, required = false) => {
 
   input.oninput = onInput;
 
+  const onfocusout = (e) => {
+    saveOnInput(e);
+  };
+
+  input.addEventListener("focusout", onfocusout);
+
   return input;
 };
 
@@ -27,7 +34,7 @@ const resizeableNumberInput = (label, placeholder, required = false) => {
   const input = html(`
   <label class="input-sizer">
     <span>${label}: </span>
-    <input ${req} type="text" id="number-input" name=${label} size="${placeholder.length}" placeholder="${placeholder}" autocomplete="off">
+    <input ${req} type="text" id="number-input" onClick="this.select();" name=${label} size="${placeholder.length}" placeholder="${placeholder}" autocomplete="off">
   </label>
     `);
 
@@ -52,6 +59,12 @@ const resizeableNumberInput = (label, placeholder, required = false) => {
 
   input.oninput = onInput;
 
+  const onfocusout = (e) => {
+    saveOnInput(e);
+  };
+
+  input.addEventListener("focusout", onfocusout);
+
   return input;
 };
 
@@ -73,6 +86,12 @@ const dropdownMenu = (categories, name) => {
     const option = dropdownOption(s);
     menu.appendChild(option);
   }
+
+  const onfocusout = (e) => {
+    saveOnInput(e);
+  };
+
+  menu.addEventListener("focusout", onfocusout);
 
   return menu;
 };

@@ -138,6 +138,7 @@ export default {
   getDividerHeader,
   getDividerHeaderCard,
   getDivider,
+  getDividerFromCard,
   getHeaderInfo,
   getHeaderInfoFromElement,
   getHeaderInfoFromCard,

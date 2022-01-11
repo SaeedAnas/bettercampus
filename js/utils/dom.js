@@ -40,6 +40,20 @@ const firefoxPath = (e) => {
   return path;
 };
 
+const createPathFromElement = (el) => {
+  var path = [];
+  var currentElem = el;
+  while (currentElem) {
+    path.push(currentElem);
+    currentElem = currentElem.parentElement;
+  }
+  if (path.indexOf(window) === -1 && path.indexOf(document) === -1)
+    path.push(document);
+  if (path.indexOf(window) === -1) path.push(window);
+
+  el.path = path;
+};
+
 // Finds the element from the button click event path using class name
 const searchPathByClass = (e, className) => {
   if (!e.path) {
@@ -156,4 +170,5 @@ export {
   replaceLi,
   removeLi,
   remove,
+  createPathFromElement,
 };

@@ -1,4 +1,10 @@
-import { injectAfter, html, searchPathByTag, remove } from "../utils/dom.js";
+import {
+  injectAfter,
+  html,
+  searchPathByTag,
+  remove,
+  createPathFromElement,
+} from "../utils/dom.js";
 import { assignmentForm, assignmentItem } from "./assignment.js";
 import query from "./query.js";
 import user from "./user.js";
@@ -89,6 +95,10 @@ const getState = (e) => {
   const items = model.fromList(ul);
 
   return items;
+};
+
+const saveOnInput = async (e) => {
+  await saveState(e);
 };
 
 const loadState = async (card) => {
@@ -190,7 +200,7 @@ const updateDivider = async (e) => {
 
 const categoryGrade = (categoryData) => {
   const color =
-    categoryData.percent > categoryData.prev.percent
+    categoryData.percent >= categoryData.prev.percent
       ? "higher-score"
       : "lower-score";
 
@@ -329,4 +339,5 @@ export {
   handleUpdate,
   updateDivider,
   loadState,
+  saveOnInput,
 };
