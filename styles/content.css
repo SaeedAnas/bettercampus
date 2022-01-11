@@ -32,6 +32,15 @@ input[type="number"] {
   /* justify-content: space-between; */
 }
 
+li {
+  opacity: 1;
+}
+
+li.remove {
+  transition: all 0.1s ease-out;
+  opacity: 0;
+}
+
 .assignment-form {
   align-items: center;
   display: flex;
@@ -40,6 +49,11 @@ input[type="number"] {
 
 .grade-input {
   align-items: center;
+}
+
+/* Selects any required <input> */
+input:required {
+  border: 1px solid red;
 }
 
 li.assignment + li.assignment {
@@ -73,6 +87,10 @@ li.assignment + li.assignment {
   color: #e84118;
 }
 
+.edit-button i:hover {
+  color: #fbc02d;
+}
+
 .grade-icon {
   padding: 0.5rem;
 }
@@ -80,6 +98,44 @@ li.assignment + li.assignment {
 .header-icon {
   padding: 0.5rem;
   padding-right: 0;
+}
+
+/* total grade */
+.total-wrapper {
+  /* width: 100%; */
+  text-align: center;
+  line-height: 0.7rem;
+  margin-right: 10px;
+}
+
+.total-letter {
+}
+
+.total-percent {
+  margin-top: 3px;
+}
+
+.higher-score {
+  color: #50c878;
+}
+
+.lower-score {
+  color: #e84118;
+}
+
+/* category grade */
+.category-wrapper {
+  /* width: 100%; */
+  text-align: center;
+  line-height: 0.7rem;
+  margin-right: 16px;
+}
+
+.category-ratio {
+}
+
+.category-percent {
+  margin-top: 3px;
 }
 
 /* A smarter person's CSS for resizeable inputs (https://css-tricks.com/auto-growing-inputs-textareas) */

@@ -1,3 +1,9 @@
+const getCourseNumber = () => {
+  let path = getPath();
+  let course = path.match(/\d+/g)[0];
+  return course;
+};
+
 // Checks if the url path is a grade path
 const isGradePath = (path) => {
   const re = /classroom\/\d+\/grades/;
@@ -25,4 +31,4 @@ const getPage = () => {
   return "";
 };
 
-export { getPath, isGradePath, getPage };
+export { getPath, isGradePath, getPage, getCourseNumber };

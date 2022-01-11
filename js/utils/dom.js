@@ -21,6 +21,11 @@ function injectAfter(newNode, referenceNode) {
   referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
+// Injects element before the reference element.
+function injectBefore(newNode, referenceNode) {
+  referenceNode.parentNode.insertBefore(newNode, referenceNode);
+}
+
 // Finds the element from the button click event path using class name
 const searchPathByClass = (e, className) => {
   const path = e.path;
@@ -97,14 +102,36 @@ function replaceClass(element, oldClassName, newClassName) {
   }
 }
 
+const replaceLi = (e, newLi) => {
+  const ul = searchPathByTag(e, "ul");
+  const li = searchPathByTag(e, "li");
+
+  ul.replaceChild(newLi, li);
+};
+
+const removeLi = (e) => {
+  const ul = searchPathByTag(e, "ul");
+  const li = searchPathByTag(e, "li");
+
+  ul.removeChild(li);
+};
+
+const remove = (el) => {
+  el.parentElement.removeChild(el);
+};
+
 export {
   searchPathByClass,
   searchPathByTag,
   wrap,
   injectCode,
   injectAfter,
+  injectBefore,
   html,
   appendAll,
   toggleClass,
   replaceClass,
+  replaceLi,
+  removeLi,
+  remove,
 };

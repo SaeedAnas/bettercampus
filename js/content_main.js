@@ -1,12 +1,12 @@
 import { getPage, getPath } from "./utils/path.js";
 import { onChange } from "./utils/observers.js";
-import { handleGradePage } from "./pages/grades.js";
+import { handleGradePage } from "./grades/page.js";
 
-const handlePage = () => {
+const handlePage = async () => {
   const page = getPage();
   switch (page) {
     case "grades":
-      handleGradePage();
+      await handleGradePage();
       break;
     default:
       break;
