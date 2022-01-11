@@ -3,10 +3,9 @@
   "description": "A better browsing experience using Infinite Campus",
   "version": "0.0.1",
   "manifest_version": 2,
-  "host_permissions": ["*://*.infinitecampus.org/campus/*"],
-  "permissions": ["storage", "cookies"],
-  "action": {
-    "default_popup": "popup/popup.html"
+  "permissions": ["storage", "cookies", "*://*.infinitecampus.org/campus/*"],
+  "browser_action": {
+    "default_popup": "popup.html"
   },
   "content_scripts": [
     {
