@@ -19,5 +19,11 @@
   "web_accessible_resources": ["/js/*"],
   "externally_connectable": {
     "matches": ["*://*.infinitecampus.org/campus/*"]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "addon@example.com",
+      "strict_min_version": "42.0"
+    }
   }
 }
