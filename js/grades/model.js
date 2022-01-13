@@ -61,10 +61,20 @@ const fromForm = (form, placeholders = true) => {
       val = Number(val);
     }
 
+    if (input.name.toLowerCase() === "multiplier") {
+      val = Number(val);
+      formData.weight = val;
+      continue;
+    }
+
     formData[input.name] = val;
   }
 
   formData.category = dropdown.value;
+
+  if (!formData.weight) {
+    formData.weight = 1;
+  }
 
   return formData;
 };

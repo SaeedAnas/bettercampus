@@ -105,7 +105,7 @@ const assignmentInfo = (name, category, weight) => {
   if (weight != 1) {
     const weightDiv = html(`
       <div class="assignment-weight divider-line">
-          Weight: <span id="weight" class="span-item">${weight}</span>
+          Multiplier: <span id="weight" class="span-item">${weight}</span>
       </div>
     `);
     info.push(weightDiv);

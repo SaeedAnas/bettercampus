@@ -67,18 +67,6 @@ const handleUpdate = async (e) => {
   updateDivider(e);
 };
 
-/*
-
-  {
-    personID: {
-      sectionID: {
-        termID: state
-      }
-    }
-  }
-
-*/
-
 const saveState = async (e) => {
   const term = await user.fetchCurrentTerm(e);
 
