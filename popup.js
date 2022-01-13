@@ -1,7 +1,7 @@
 const config = {
   links: {
     website: "https://saeedanas.me",
-    github: "https://github.com/saeedanas",
+    github: "https://github.com/saeedanas/bettercampus",
   },
 };
 
