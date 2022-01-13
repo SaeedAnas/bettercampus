@@ -104,6 +104,7 @@ input[type="number"] {
 .assignment-right > .assignment-buttons {
   padding-left: 10px;
   padding-right: 0;
+  min-width: 1rem;
 }
 
 .divider-line {
@@ -130,6 +131,7 @@ li.remove {
 .grade-input {
   display: grid;
   align-items: center;
+  margin-top: 5px;
 }
 
 /* Selects any required <input> */
@@ -345,9 +347,15 @@ li.assignment + li.assignment {
     margin: 0;
     cursor: pointer;
     border: 1px solid var(--bc, var(--border));
+    /* border: 1px solid #e8eaed; */
     background: var(--b, var(--background));
     transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
   }
+
+  .checkbox-wrapper {
+    margin: 5px 0;
+  }
+
   input[type="checkbox"]:after,
   input[type="radio"]:after {
     content: "";
@@ -413,6 +421,7 @@ li.assignment + li.assignment {
 
   input[type="checkbox"]:not(.switch) {
     border-radius: 7px;
+    margin-left: 5px;
   }
   input[type="checkbox"]:not(.switch):after {
     width: 5px;
@@ -465,6 +474,9 @@ li.assignment + li.assignment {
 }
 
 /* select menu https://codepen.io/avstorm/pen/bPOgRO */
+.select-input {
+  margin-left: 5px;
+}
 .select {
   position: relative;
   min-width: 200px;
@@ -485,7 +497,7 @@ li.assignment + li.assignment {
 .select select {
   -webkit-appearance: none;
   padding: 7px 40px 7px 12px;
-  width: 100%;
+  /* width: 100%; */
   border: 1px solid #e8eaed;
   border-radius: 5px;
   background: #fff;

@@ -80,9 +80,16 @@ const dropdownOption = (s) => {
 const dropdownMenu = (categories, name) => {
   const menu = html(`
     <select class="select-input" name=${name} id=${name} required>
-      <option value="" disabled="disabled" selected="selected">Select Category</option>
     </select>
     `);
+
+  const defaultOption = html(`
+    <option value="" disabled="disabled" selected="selected">Select Category</option>
+    `);
+
+  if (categories.length > 1) {
+    menu.appendChild(defaultOption);
+  }
 
   for (const s of categories) {
     const option = dropdownOption(s);
@@ -138,7 +145,7 @@ const selectMenuWrapper = (categories, name, defaultInput = null) => {
 
 const weightCheckBox = (defaultInput = null) => {
   const checkBox = html(`
-    <div>
+    <div class="checkbox-wrapper">
     </div>
     `);
 
