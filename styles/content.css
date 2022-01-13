@@ -128,10 +128,14 @@ li.remove {
   font-family: "Inter", Arial, sans-serif;
 }
 
+.form-middle {
+  margin: 5px 0;
+}
+
 .grade-input {
   display: grid;
   align-items: center;
-  margin-top: 5px;
+  margin: 5px 0;
 }
 
 /* Selects any required <input> */
@@ -325,6 +329,11 @@ li.assignment + li.assignment {
   /* text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.15); */
 }
 
+.input-sizer ::placeholder {
+  /* color: #5a667f; */
+  opacity: 1; /* Firefox */
+}
+
 /* Checkbox https://codepen.io/aaroniker/pen/ZEYoxEY */
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
   input[type="checkbox"],
@@ -353,7 +362,13 @@ li.assignment + li.assignment {
   }
 
   .checkbox-wrapper {
-    margin: 5px 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .checkbox-wrapper > .input-sizer {
+    margin-bottom: 0;
+    margin-top: 0;
   }
 
   input[type="checkbox"]:after,
@@ -508,7 +523,8 @@ li.assignment + li.assignment {
   transition: all 150ms ease;
 }
 .select select:required:invalid {
-  color: #5a667f;
+  /* color: #5a667f; */
+  color: #a1afc0;
 }
 .select select option {
   color: #223254;
