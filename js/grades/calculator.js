@@ -34,9 +34,28 @@ const categoryGrade = (data, categories) => {
 
   // iterate over data and add points and total to categoryMap using category name
   data.forEach((assignment) => {
-    const category = categoryMap[assignment.category];
-    category.points += assignment.points * assignment.weight;
-    category.total += assignment.total * assignment.weight;
+    const c = assignment.category;
+    if (c.name) {
+      const category = categoryMap[c.name];
+      if (!category) {
+        categoryMap[c.name] = {
+          points: 0,
+          total: 0,
+          weight: assignment.category.weight,
+          prev: {
+            points: 0,
+            total: 0,
+            percent: 0,
+          },
+        };
+      }
+    }
+
+    const name = c.name ? c.name : c;
+
+    const category = categoryMap[name];
+    category.points += assignment.points * assignment.multiplier;
+    category.total += assignment.total * assignment.multiplier;
   });
 
   const empty = [];

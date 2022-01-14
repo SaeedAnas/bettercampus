@@ -2,6 +2,7 @@ import { wrap, html } from "../utils/dom.js";
 import { closeButton, checkButton } from "./buttons.js";
 import { onRemove } from "./assignment.js";
 import { saveOnInput } from "./list.js";
+import user from "./user.js";
 
 const resizeableTextInput = (label, placeholder, required = false) => {
   let req = required ? "required" : "";
@@ -204,6 +205,132 @@ const weightCheckBox = (defaultInput = null) => {
   return checkBox;
 };
 
+const customCategoryInput = (defaultInput = null) => {
+  const categoryName = resizeableTextInput(
+    "category",
+    "Untitled Category",
+    true
+  );
+  const customWeight = resizeableNumberInput("weight", "10", true);
+
+  if (defaultInput) {
+    defaultValue(categoryName, defaultInput.name);
+    defaultValue(customWeight, defaultInput.weight);
+  }
+
+  const categoryInput = wrap(
+    [categoryName, customWeight],
+    ["custom-category-input"]
+  );
+
+  return categoryInput;
+};
+
+const customCategoryBox = (checked) => {
+  const checkBox = html(`
+    <label class="checkbox-wrapper">
+    </label>
+    `);
+
+  const input = html(`
+    <input class="custom-category" id="custom" type="checkbox">
+    `);
+
+  const label = html(`
+    <label>Custom Category</label>
+    `);
+
+  if (checked) {
+    input.checked = true;
+  }
+
+  // make input checked on label click
+  label.onclick = (e) => {
+    const checkbox = e.target.parentNode.getElementsByTagName("input")[0];
+    if (checkbox.checked) {
+      checkbox.checked = false;
+    } else {
+      checkbox.checked = true;
+    }
+    const newEvent = {};
+    newEvent.target = checkbox;
+    newEvent.path = e.path;
+    checkbox.onclick(newEvent);
+  };
+
+  const onClick = async (e) => {
+    const checkbox = e.target;
+
+    if (checkbox.checked) {
+      const container = checkbox.parentNode.parentNode.parentNode;
+      const dropdown = container.getElementsByClassName("dropdown-menu")[0];
+
+      if (!dropdown) {
+        const customInput = customCategoryInput();
+        container.appendChild(customInput);
+        return;
+      }
+      const customInput = customCategoryInput();
+
+      container.replaceChild(customInput, dropdown);
+    } else {
+      const container = checkbox.parentNode.parentNode.parentNode;
+      let dropdown = container.getElementsByClassName("dropdown-menu")[0];
+
+      if (dropdown) {
+        return;
+      }
+
+      const customInput = container.getElementsByClassName(
+        "custom-category-input"
+      )[0];
+
+      if (customInput) {
+        const categories = await user.fetchCategories(e);
+        dropdown = selectMenuWrapper(categories, "category");
+        const dropdownWrapper = wrap([dropdown], ["dropdown-menu"]);
+
+        container.replaceChild(dropdownWrapper, customInput);
+      }
+    }
+    saveOnInput(e);
+  };
+
+  input.onclick = onClick;
+
+  const wrapper = wrap([input, label], ["checkbox-wrapper"]);
+
+  checkBox.appendChild(wrapper);
+
+  return checkBox;
+};
+
+const categoryInput = (categories, defaultInput) => {
+  let checked = false;
+
+  let wrapper;
+
+  if (defaultInput) {
+    if (defaultInput.name) {
+      const custom = customCategoryInput(defaultInput);
+      checked = true;
+      wrapper = custom;
+    } else {
+      const dropdown = selectMenuWrapper(categories, "category", defaultInput);
+      wrapper = wrap([dropdown], ["dropdown-menu"]);
+    }
+  } else {
+    const dropdown = selectMenuWrapper(categories, "category");
+    wrapper = wrap([dropdown], ["dropdown-menu"]);
+  }
+
+  const customCategory = customCategoryBox(checked);
+
+  const middle = wrap([customCategory, wrapper], ["form-middle"]);
+
+  return middle;
+};
+
 const defaultValue = (el, value) => {
   if (!value) {
     return;
@@ -228,7 +355,7 @@ const itemForm = (categories, defaultInputs = {}) => {
     defaultValue(textInput, defaultInputs.name);
     defaultValue(pointInput, defaultInputs.points);
     defaultValue(totalInput, defaultInputs.total);
-    weightInput = weightCheckBox(defaultInputs.weight);
+    weightInput = weightCheckBox(defaultInputs.multiplier);
   } else {
     weightInput = weightCheckBox();
   }
@@ -240,19 +367,7 @@ const itemForm = (categories, defaultInputs = {}) => {
   inputs.push(top);
 
   if (categories.length > 0) {
-    let dropdown;
-
-    if (hasDefaultInputs) {
-      dropdown = selectMenuWrapper(
-        categories,
-        "category",
-        defaultInputs.category
-      );
-    } else {
-      dropdown = selectMenuWrapper(categories, "category");
-    }
-
-    const middle = wrap([dropdown], ["form-middle"]);
+    const middle = categoryInput(categories, defaultInputs.category);
 
     inputs.push(middle);
   }

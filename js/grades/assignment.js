@@ -95,17 +95,29 @@ const assignmentInfo = (name, category, weight) => {
     `);
   info.push(nameDiv);
 
-  const categoryDiv = html(`
+  let categoryDiv;
+
+  if (category.name) {
+    categoryDiv = html(`
+    <div class="assignment-category divider-line">
+        <span id="category" class="span-item">${category.name}</span>: 
+        <span id="category_weight" class="span-item">${category.weight}</span>
+    </div>
+    `);
+  } else {
+    categoryDiv = html(`
     <div class="assignment-category divider-line">
         <span id="category" class="span-item">${category}</span>
     </div>
     `);
+  }
+
   info.push(categoryDiv);
 
   if (weight != 1) {
     const weightDiv = html(`
       <div class="assignment-weight divider-line">
-          Multiplier: <span id="weight" class="span-item">${weight}</span>
+          Multiplier: <span id="multiplier" class="span-item">${weight}</span>
       </div>
     `);
     info.push(weightDiv);
@@ -154,7 +166,7 @@ const assignmentItem = (formData) => {
   const leftDiv = assignmentInfo(
     formData.name,
     formData.category,
-    formData.weight
+    formData.multiplier
   );
 
   const percent = calculator.calcPercent(formData.points, formData.total);

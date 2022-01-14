@@ -12,9 +12,19 @@ const fromTerm = (term) => {
 
     const progress = category.progress;
 
-    const points = progress.progressPointsEarned;
-    const total = progress.progressTotalPoints;
-    const percent = progress.progressPercent;
+    let points;
+    let total;
+    let percent;
+
+    if (!progress) {
+      points = 0;
+      total = 0;
+      percent = 0;
+    } else {
+      points = progress.progressPointsEarned;
+      total = progress.progressTotalPoints;
+      percent = progress.progressPercent;
+    }
 
     const categoryData = {
       name,
@@ -42,7 +52,6 @@ const fromHeader = (spans) => {
 
 const fromForm = (form, placeholders = true) => {
   const inputs = form.getElementsByTagName("input");
-  const dropdown = form.getElementsByTagName("select")[0];
 
   // input array to object where key is input name and value is input value
   const formData = {};
@@ -63,17 +72,23 @@ const fromForm = (form, placeholders = true) => {
 
     if (input.name.toLowerCase() === "multiplier") {
       val = Number(val);
-      formData.weight = val;
+      formData.multiplier = val;
       continue;
     }
 
     formData[input.name] = val;
   }
 
-  formData.category = dropdown.value;
+  const dropDownBox = form.getElementsByClassName("custom-category")[0];
+  if (!dropDownBox.checked) {
+    const dropdown = form.getElementsByTagName("select")[0];
+    formData.category = dropdown.value;
+  } else {
+    formData.category = { name: formData.category, weight: formData.weight };
+  }
 
-  if (!formData.weight) {
-    formData.weight = 1;
+  if (!formData.multiplier) {
+    formData.multiplier = 1;
   }
 
   return formData;
@@ -94,8 +109,15 @@ const fromItem = (item) => {
     }
   }
 
-  if (!itemData.weight) {
-    itemData.weight = 1;
+  if (!itemData.multiplier) {
+    itemData.multiplier = 1;
+  }
+
+  if (itemData.category_weight) {
+    itemData.category = {
+      name: itemData.category,
+      weight: itemData.category_weight,
+    };
   }
 
   return itemData;
