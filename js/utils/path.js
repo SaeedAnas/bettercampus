@@ -14,6 +14,16 @@ const isGradePath = (path) => {
   return false;
 };
 
+// Checks if url path is today path
+const isTodayPath = (path) => {
+  const re = /apps\/portal\/student\/today/;
+
+  if (path.match(re)) {
+    return true;
+  }
+  return false;
+};
+
 // Gets the path of the current page
 const getPath = () => {
   let url = document.URL;
@@ -26,8 +36,9 @@ const getPage = () => {
   let path = getPath();
   if (isGradePath(path)) {
     return "grades";
+  } else if (isTodayPath(path)) {
+    return "today";
   }
-
   return "";
 };
 

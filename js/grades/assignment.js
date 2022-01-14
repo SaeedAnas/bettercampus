@@ -10,7 +10,7 @@ import { itemForm } from "./input.js";
 import user from "./user.js";
 import model from "./model.js";
 import { handleOnRemove, handleUpdate } from "./list.js";
-import calculator from "./calculator.js";
+import calculator from "../utils/calculator.js";
 
 const addGrade = async (e) => {
   toItem(e);

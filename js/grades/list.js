@@ -1,15 +1,9 @@
-import {
-  injectAfter,
-  html,
-  searchPathByTag,
-  remove,
-  createPathFromElement,
-} from "../utils/dom.js";
+import { injectAfter, html, searchPathByTag, remove } from "../utils/dom.js";
 import { assignmentForm, assignmentItem } from "./assignment.js";
 import query from "./query.js";
 import user from "./user.js";
 import model from "./model.js";
-import calculator from "./calculator.js";
+import calculator from "../utils/calculator.js";
 
 const assignmentList = () => {
   const ul = html(`

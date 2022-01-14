@@ -206,11 +206,7 @@ const weightCheckBox = (defaultInput = null) => {
 };
 
 const customCategoryInput = (defaultInput = null) => {
-  const categoryName = resizeableTextInput(
-    "category",
-    "Untitled Category",
-    true
-  );
+  const categoryName = resizeableTextInput("category", "Untitled Category");
   const customWeight = resizeableNumberInput("weight", "10", true);
 
   if (defaultInput) {
